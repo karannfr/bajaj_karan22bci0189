@@ -1,20 +1,15 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
 const serverless = require('serverless-http');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { handleBFHL } = require('../controllers/bfhlController');
 
 const app = express();
 
-const corsOptions = {
-  origin: '*',
-  methods: ['POST'],
-  allowedHeaders: ['Content-Type']
-};
-
-app.use(cors(corsOptions));
+app.use(cors({ origin: '*', methods: ['POST'], allowedHeaders: ['Content-Type'] }));
 app.use(bodyParser.json());
 
-app.use('/', require('../routes/bfhl'));
+app.post('/bfhl', handleBFHL);
 
 module.exports = app;
 module.exports.handler = serverless(app);
